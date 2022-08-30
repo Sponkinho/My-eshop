@@ -41,6 +41,8 @@ class RegisterController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            # La méthode addFlash() nous permet d'afficher des messages déstinés ) l'utilisateur, on pourra les afficher en front avec Twig
+            $this->addFlash('success', 'Votre inscription a été effectuée avec succès !');
             return $this->redirectToRoute('default_home');
         }
 
