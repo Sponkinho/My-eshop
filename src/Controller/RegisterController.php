@@ -19,6 +19,12 @@ class RegisterController extends AbstractController
     #[Route("/inscription", name: 'user_register', methods: ['GET', 'POST'])]
     public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+
+        # Cette condition permet de detecter si un utilisateur est connecté, si oui alors l'utilisateur est redirigé. Cela interdit l'inscription à un user connecté.
+        if ($this->getUser()) {
+            return $this->redirectToRoute('default_home');
+        }
+
         # 1 - Instanciation
         $user = new User();
 
