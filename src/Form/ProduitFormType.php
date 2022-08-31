@@ -2,59 +2,46 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Produit;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\Length;
 
-class RegisterFormType extends AbstractType
+class ProduitFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class, [
-                "label" => "Email",
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Ce champ ne peut être vide'
-                    ]),
-                    new Length([
-                        'min' => 4,
-                        'max' => 255,
-                        'minMessage' => 'Votre email doit comporter au minimum {{ limit }} caractères',
-                        'maxMessage' => 'Votre email peut comporter au maximum {{ limit }} caractères',
-                    ]),
-                    new Email([
-                        'message' => "Votre email n'est pas au bon format ex: mail@exemple.fr"
-                    ])
-                ],
-            ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe',
+            ->add('title', TextType::class, [
+                'label' => 'Titre',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ ne peut être vide'
                     ]),
                 ],
             ])
-            ->add('firstname', TextType::class, [
-                'label' => 'Prénom',
+            ->add('description')
+            ->add('color', TextType::class, [
+                'label' => 'Couleur',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ ne peut être vide'
                     ]),
                 ],
             ])
-            ->add('lastname', TextType::class, [
-                'label' => 'Nom',
+            ->add('size', ChoiceType::class, [
+                'label' => 'Taille',
+                'choices' => [
+                    'S' => 's',
+                    'M' => 'm',
+                    'L' => 'l',
+                    'XL' => 'xl',
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Ce champ ne peut être vide'
@@ -62,12 +49,10 @@ class RegisterFormType extends AbstractType
                 ],
             ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'Civilité',
-                'expanded' => true, // Pour avoir une checkbox
+                'label' => 'Genre',
                 'choices' => [
-                    'Homme' => 'h',
-                    'Femme' => 'f',
-                    'Non Binaire' => 'non binaire'
+                    'Homme' => 'homme',
+                    'Femme' => 'femme',
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -75,20 +60,41 @@ class RegisterFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('submit', SubmitType::class,[
-                'label' => 'Valider',
+            ->add('photo', FileType::class, [
+                'label' => 'Photo du produit',
+                
+            ])
+            ->add('price', TextType::class, [
+                'label' => 'Prix unitaire',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ ne peut être vide'
+                    ]),
+                ],
+            ])
+            ->add('stock', TextType::class, [
+                'label' => 'Quantité en stock',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Ce champ ne peut être vide'
+                    ]),
+                ],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Ajouter',
                 'validate' => false,
                 'attr' => [
                     'class' => 'd-block mx-auto btn btn-primary col-3'
                 ]
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Produit::class,
+            'allow_file_upload' => true, // Pour autoriser l'upload de fichiers
+            'photo' => null,
         ]);
     }
 }
