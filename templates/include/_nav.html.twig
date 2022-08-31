@@ -11,40 +11,45 @@
 				</li>
 
 				{% if not app.user %}
-				
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('user_register') }}">Inscription</a>
-				</li>
 
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path ('app_login') }}">Connexion</a>
-				</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('user_register') }}">Inscription</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path ('app_login') }}">Connexion</a>
+					</li>
 
 				{% else %}
 
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path ('app_logout') }}">Déconnexion</a>
-				</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path ('app_logout') }}">Déconnexion</a>
+					</li>
 
 				{% endif %}
 
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-						Espace Admin
-					</a>
-					<ul class="dropdown-menu">
-						<li>
-							<a class="dropdown-item" href="#">Action</a>
-						</li>
-						<li>
-							<a class="dropdown-item" href="#">Another action</a>
-						</li>
-						<li><hr class="dropdown-divider"></li>
-						<li>
-							<a class="dropdown-item" href="#">Something else here</a>
-						</li>
-					</ul>
-				</li>
+				{# Pour vérifier le rôle d'un user, vous devez utiliser la fonction de Twig is_granted() #}
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Espace Admin
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a class="dropdown-item" href="#">Dashboard</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Gestion des produits</li>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Gestion des membres</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Gestion des commandes</a>
+							</li>
+						</ul>
+					</li>
+				{% endif %}
 			</div>
 		</div>
 	</nav>
