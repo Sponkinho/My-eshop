@@ -105,19 +105,19 @@ class Produit
         return $this->gender;
     }
 
-    public function setGender(string $gender): self
+    public function setGender(?string $gender): self
     {
         $this->gender = $gender;
 
         return $this;
     }
 
-    public function getPhoto(): ?string
+    public function getPhoto(): string
     {
         return $this->photo;
     }
 
-    public function setPhoto(string $photo): self
+    public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
 
