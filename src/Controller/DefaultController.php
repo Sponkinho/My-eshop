@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commande;
 use App\Entity\Produit;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,16 @@ class DefaultController extends AbstractController
         
         return $this->render('default/home.html.twig', [
             'produits' => $produits
+        ]);
+    }
+
+    #[Route("/voi-mes-infos", name: 'show_profile', methods: ['GET'])]
+    public function showProfile(EntityManagerInterface $entityManager): Response
+    {
+        $commands = $entityManager->getRepository(Commande::class)->findBy(['deletedAt' => null]);
+        
+        return $this->render('default/show_profile.html.twig', [
+            'commands' => $commands
         ]);
     }
 }
